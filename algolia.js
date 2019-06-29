@@ -3,8 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 var MongoClient = require('mongodb').MongoClient;
 const algoliasearch = require('algoliasearch');
-const client = algoliasearch('DI9WTF1XE0', 'cf66c84d6510d48d905f2a230713a9d2');
-const index = client.initIndex('dubai');
+const client = algoliasearch('Application Id', 'Admin API Key');
+const index = client.initIndex('Index_name');
 
 app.set('view engine', 'ejs');
 app.use(bodyParser());
@@ -14,14 +14,14 @@ app.use(bodyParser.json());
 var url = 'mongodb://localhost:27017/';
 
 MongoClient.connect(url, function (err, client) {
-    var db = client.db('algolia');
-    var cursor = db.collection('dubai').find();
+    var db = client.db('Database_Name');
+    var cursor = db.collection('Collection_Name').find();
     var data = [];
     cursor.each(function (err, result) {
         if (result) {
             data.push(result);
         }
-        // index.addObjects(data);
+        index.addObjects(data);
     });
 
 });
@@ -76,9 +76,6 @@ app.post('/search', (req, res) => {
                 if(availableFor == '' && type == ''){
                     buildingData.push({ c_name: hits[i].community.c_name, buldings: hits[i].community.buldings[j] });
                 }
-                // else {
-                //     buildingData.push({ c_name: hits[i].community.c_name, buldings: hits[i].community.buldings[j] });
-                // }
             }
         }
         return res.status(200).send(buildingData);
