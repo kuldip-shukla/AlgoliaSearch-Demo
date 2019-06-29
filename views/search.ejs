@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Algolia</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <style>
+        input[type=checkbox]+label {
+            display: block;
+            margin: 0.2em;
+            cursor: pointer;
+            padding: 0.2em;
+        }
+
+        input[type=checkbox] {
+            display: none;
+        }
+
+        input[type=checkbox]+label:before {
+            content: "\2714";
+            border: 0.1em solid #000;
+            border-radius: 0.2em;
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            padding-left: 0.2em;
+            padding-bottom: 0.3em;
+            margin-right: 0.2em;
+            vertical-align: bottom;
+            color: transparent;
+            transition: .2s;
+        }
+
+        input[type=checkbox]+label:active:before {
+            transform: scale(0);
+        }
+
+        input[type=checkbox]:checked+label:before {
+            background-color: MediumSeaGreen;
+            border-color: MediumSeaGreen;
+            color: #fff;
+        }
+
+        input[type=checkbox]:disabled+label:before {
+            transform: scale(1);
+            border-color: #aaa;
+        }
+
+        input[type=checkbox]:checked:disabled+label:before {
+            transform: scale(1);
+            background-color: #bfb;
+            border-color: #bfb;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .box {
+            background: #f3f3f3;
+            border: 1px solid #d4d4d4;
+            border-radius: 5px;
+            padding: 20px;
+            display: table;
+            margin: 100px auto 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function searchKeyword() {
+            var rent = Boolean;
+            var buy = Boolean;
+            var residential = Boolean;
+            var commercial = Boolean;
+            if (document.getElementById('rent').checked == true) {
+                rent = true;
+            }
+            else {
+                rent = false;
+            }
+            if (document.getElementById('buy').checked == true) {
+                buy = true;
+            }
+            else {
+                buy = false;
+            }
+            if (document.getElementById('resi').checked == true) {
+                residential = true;
+            }
+            else {
+                residential = false;
+            }
+            if (document.getElementById('comm').checked == true) {
+                commercial = true;
+            }
+            else {
+                commercial = false;
+            }
+            if (document.getElementById('search').value == '') {
+                $('#searchResult').empty();
+            }
+            else {
+                var data = {
+                    rent: rent,
+                    buy: buy,
+                    keyword: document.getElementById('search').value,
+                    residential: residential,
+                    commercial: commercial,
+                }
+                $.ajax({
+                    url: "/search",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        $('#searchResult').empty();
+                        console.log(result)
+                        for (let i = 0; i < result.length; i++) {
+                            console.log(result[i])
+                            let newElement = document.createElement("table");
+                            newElement.innerHTML += `<tr><td><u><b>Community</b></u></td></tr><tr><td><b>Name: </b>${result[i].c_name}</td></tr>`;
+                            newElement.innerHTML += `<tr><td><u>Building</u></td></tr>
+                                                        <tr><td><b>Name: </b>${result[i].buldings.b_name}</td></tr>
+                                                        <tr><td><b>availableFor: </b>${result[i].buldings.availableFor}</td></tr>
+                                                        <tr><td><b>Type: </b>${result[i].buldings.type}</td></tr>`;
+                            document.getElementById("searchResult").appendChild(newElement);
+                        }
+                    },
+                })
+            }
+        }    
+    </script>
+    <form action="/search" method="POST" class="box">
+        <div class="d-flex">
+            <div class="check_bx">
+                <input type="radio" id="rent" name="availableFor" value="Rent">
+                <label for="rent">Rent</label>
+            </div>
+            <div class="check_bx">
+                <input type="radio" id="buy" name="availableFor" value="Buy">
+                <label for="buy">Buy</label>
+            </div>
+            <input type="search" onkeyup="searchKeyword()" placeholder="search Here.." id="search" /><br>
+        </div>
+
+        <div class="d-flex">
+            <div class="check_bx">
+                <input type="radio" id="resi" name="type" value="Buy">
+                <label for="resi">Residential</label>
+            </div>
+            <div class="check_bx">
+                <input type="radio" id="comm" name="type" value="Buy">
+                <label for="comm">Commercial</label>
+            </div>
+        </div>
+    </form>
+    <div id="searchResult" style="width:100%"></div>
+</body>
+
+</html>
