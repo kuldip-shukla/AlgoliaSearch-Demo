@@ -1,15 +1,15 @@
 # AlgoliaSearch-Demo
  To integrate Algolia Search in your project follow the below steps
  
- # Step1: Create an account On algolia.com
+ ## Step1: Create an account On algolia.com
  You can create a trial version(15 Days Validity) from https://www.algolia.com/users/sign_up
  
- # Step2: Create an Index
+ ## Step2: Create an Index
  You can create an index from Indice tab in your algolia.com account
  or
  You can also create an index from your code which is alson in this.
  
- # Step3: Add an Record
+ ## Step3: Add an Record
  Add record from Select Particular Index -> Add Record - > Select Your Option.
  or 
  Direct Add record in NoSQL or SQL Database and then upload.
@@ -118,12 +118,12 @@
 ]
 ```
 
-# Step4: Get Your Keys
+## Step4: Get Your Keys
 ```javascript
 var client = algoliasearch('Application ID', 'Admin Api Key');
 ```
 
-# Step5: After Clone Write below Commands
+## Step5: After Clone Write below Commands
     npm install
     nodemon or node algolia.js
 
