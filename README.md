@@ -126,3 +126,6 @@ var client = algoliasearch('Application ID', 'Admin Api Key');
 # Step5: After Clone Write below Commands
     npm install
     nodemon or node algolia.js
+
+# License
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/kuldip-shukla/AlgoliaSearch-Demo/blob/master/LICENSE.md) file for details
